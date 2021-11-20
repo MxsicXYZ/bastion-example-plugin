@@ -1,12 +1,13 @@
 /*!
- * @plugin bastion-example-plugin
- * @author Sankarsan Kampa (k3rn31p4nic)
+ * @plugin bastion-ticket-plugin
+ * @author Xynnix (Night Raven)
  * @license MIT
  */
 
 "use strict";
 
 const tesseract = require("@bastion/tesseract");
+const schema = require("../../models/tickets");
 
 class ticketSetupCommandPlugin extends tesseract.Command {
     constructor() {
@@ -30,23 +31,18 @@ class ticketSetupCommandPlugin extends tesseract.Command {
     }
 
     exec = async (message, argv) => {
-
-        if (1 > message.mentions.size || 2 < message.mentions.size) return message.channel.send(`Correct usage: ${this.syntax}`)
-        const chn = message.mentions.channels.filter(x => x.parentId == null && (x.type ==
-            "GUILD_TEXT" || x.type == "text"))
-        const cat = message.mentions.channels.filter(x => x.parentId == null && (x.type ==
-            "GUILD_CATEGORY" || x.type == "category"))
-        if (!chn || chn.type !== "text" && chn.type !== "GUILD_TEXT") return message.channel.send("Please provide a `TEXT` channel.");
-        if (!cat || cat.type !== "category" && chn.type !== "GUILD_CATEGORY") return message.channel.send("Please provide a `TEXT` channel.");
+        const chn = message.mentions.channels.first();
+        if (!chn) return message.channel.send("Please provide a `TEXT` channel.");
         await chn.send("React below with `🎫` to create a new ticket!").then(m => {
             const data = new schema({
-                guildID: (message.guild.id),
-                ticketCategory: (cat.id),
+                guildID: message.guild.id,
+                ticketCategory: chn.parentID,
                 messageId: m.id,
                 ticketChannel: chn.id
             });
-            data.save().catch(e => console.log("Error: saving remind channels to ticket-db"))
-        })
+            data.save().catch(e => console.log("Error: saving ticket channels to ticket-db"+e))
+        	m.react("🎫")
+	})
     }
 }
 
