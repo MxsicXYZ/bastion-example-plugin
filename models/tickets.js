@@ -4,7 +4,7 @@ const {
 } = require("mongoose");
 
 module.exports = model('tickets', new Schema({
-    memberID: {
+    guildID: {
         type: String,
         required: true
     },
@@ -18,10 +18,10 @@ module.exports = model('tickets', new Schema({
     },
     messageId: {
         type: String,
-      required: true
+        required: true
     },
-   tEmoji:{
-      type: String,
-     default: "🎫"
-   }
+    tEmoji: {
+        type: String,
+        default: "🎫"
+    }
 }));
