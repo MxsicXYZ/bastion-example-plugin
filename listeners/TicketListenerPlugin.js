@@ -16,6 +16,7 @@ class TicketListenerPlugin extends tesseract.Listener {
     }
 
     exec = async (reaction, user) => {
+	    if (user.bot) return;
 	if (reaction.emoji.name != "🎫") return;
 			console.log("1")
         schema.find({
