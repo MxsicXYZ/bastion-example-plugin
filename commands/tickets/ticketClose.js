@@ -8,7 +8,7 @@
 const tesseract = require("@bastion/tesseract");
 const schema = require("../../models/tickets");
 
-class ticketSetupCommandPlugin extends tesseract.Command {
+class ticketCloseCommandPlugin extends tesseract.Command {
     constructor() {
         super("ticketClose", {
             description: "This closes the current ticket channel",
